@@ -8,10 +8,9 @@ App.online_status = App.cable.subscriptions.create "OnlineStatusChannel",
     console.log('Disconnected from OnlineStatusChannel')
 
   received: (data) ->
-    # Called when there's incoming data on the websocket for this channel
-    current_user = data.user
-
-    if current_user.online && $("span[id='user_#{current_user.id}'").length == 0
-      $('#users_online').append("<span id='user_#{current_user.id}' > #{current_user.nickname} </span>")
-    else if !current_user.online
-      $("span[id='user_#{current_user.id}'").remove()
+    if document.getElementById("user_" + data['user_id'])
+      document.getElementById("user_" + data['user_id']).outerHTML = data['user']
+    else
+      # Called when there's incoming data on the websocket for this channel
+      console.log('Received message: ' + data['user'])
+      $('#users-online').append data['user']

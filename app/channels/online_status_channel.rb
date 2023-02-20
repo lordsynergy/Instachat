@@ -3,19 +3,18 @@ class OnlineStatusChannel < ApplicationCable::Channel
     logger.info 'Subscribed to OnlineStatusChannel'
 
     stream_from 'online_status_channel'
-
-    speak('online' => true)
+    user_service = UserService.new(user: current_user)
+    user_service.is_online
+    user_service.perform
   end
 
   def unsubscribed
-    logger.info 'Unsubscribed to UserStatusChannel'
+    logger.info 'Unsubscribed to OnlineStatusChannel'
 
-    speak('online' => false)
-  end
-
-  def speak(data)
-    logger.info "OnlineStatusChannel, speak: #{data.inspect}"
-
-    UserService.new(user: current_user, online: data['online']).perform
+    if ActionCable.server.connections.select { |con| con.current_user == current_user }.length == 0
+      user_service = UserService.new(user: current_user)
+      user_service.is_offline
+      user_service.perform
+    end
   end
 end

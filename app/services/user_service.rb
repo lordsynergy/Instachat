@@ -1,25 +1,27 @@
 class UserService
-  def initialize(user:, online:)
+  def initialize(user:)
     @user = user
-    @online = online
+  end
+
+  def is_online
+    @user.update(online: true)
+  end
+
+  def is_offline
+    @user.update(online: false)
   end
 
   def perform
-    update_status!
-    broadcast_all_users
+    broadcast_user
   end
 
   private
 
-  def update_status!
-    @user.update! online: @online
+  def broadcast_user
+    ActionCable.server.broadcast 'online_status_channel', { user: render_user, user_id: @user.id }
   end
 
-  def broadcast_all_users
-    ActionCable.server.broadcast 'user_status_channel', users_online: render_users
-  end
-
-  def render_users
-    ApplicationController.renderer.render(partial: 'users/user', collection: User.online)
+  def render_user
+    ApplicationController.renderer.render(partial: 'users/user', locals: { user: @user })
   end
 end

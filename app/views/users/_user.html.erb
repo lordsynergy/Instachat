@@ -1,5 +1,5 @@
-<span class="user">
-  <span class="user-name">
-    <%= user.nickname %>
+<% if user.online %>
+  <span class="user-name" id="user_<%= user.id %>">
+      <%= "#{user.nickname}" %>
   </span>
-</span>
+<% end %>

@@ -18,6 +18,6 @@ class ApplicationController < ActionController::Base
   end
 
   def set_users
-    @users = User.online
+    @online_users = User.where(online: true)
   end
 end

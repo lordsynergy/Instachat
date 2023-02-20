@@ -1,20 +1,34 @@
 class OnlineStatusChannel < ApplicationCable::Channel
   def subscribed
-    logger.info 'Subscribed to OnlineStatusChannel'
+    @list_name = 'current_users_nicknames'
 
-    stream_from 'online_status_channel'
-    user_service = UserService.new(user: current_user)
-    user_service.is_online
-    user_service.perform
+    stream_from 'online_status'
+
+    $redis.rpush(@list_name, nickname)
+    appear
   end
 
   def unsubscribed
-    logger.info 'Unsubscribed to OnlineStatusChannel'
+    $redis.lrem(@list_name, 1, nickname)
+    appear
+  end
 
-    if ActionCable.server.connections.select { |con| con.current_user == current_user }.length == 0
-      user_service = UserService.new(user: current_user)
-      user_service.is_offline
-      user_service.perform
-    end
+  def appear
+    @users = nicknames_list
+    broadcast
+  end
+
+  private
+
+  def nicknames_list
+    $redis.lrange(@list_name, 0, -1)
+  end
+
+  def broadcast
+    ActionCable.server.broadcast('online_status', { users: @users.uniq })
+  end
+
+  def nickname
+    current_user.nickname
   end
 end

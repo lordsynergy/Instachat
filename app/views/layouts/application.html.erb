@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Instatalk</title>
+<title>Instachat</title>
 <%= csrf_meta_tags %>
 
 <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -14,11 +14,25 @@
     <div class="col-md-8">
       <div class="card text-center mt-4 mb-4">
         <div class="card-body">
-          Welcome to Instatalk, <b><%= current_user.nickname %></b>!
+          Welcome to Instachat, <b><%= current_user.nickname %></b>!
         </div>
       </div>
 
-      <%= yield %>
+      <div class="row">
+
+        <div class="col-md-8">
+          <%= yield %>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header font-weight-bold">Online:</div>
+            <div class="card-body" id="users-online">
+              <%= render partial: 'users/user', collection: @users %>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

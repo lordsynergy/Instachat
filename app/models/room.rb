@@ -1,7 +1,8 @@
 class Room < ApplicationRecord
-  before_create :generate_token
+  belongs_to :user
+  has_many :messages, dependent: :destroy
 
-  has_many :messages
+  before_create :generate_token
 
   def to_param
     token

@@ -1,6 +1,9 @@
 <h1>Room <%= @room.id %></h1>
 
 <%= link_to "Leave", root_path %>
+<% if current_user == @room.user %>
+  <%= link_to "Delete", room_path(@room), method: :delete, data: { confirm: "Are you sure you want to delete this room?" } %>
+<% end %>
 
 <p id="notice"><%= notice %></p>
 

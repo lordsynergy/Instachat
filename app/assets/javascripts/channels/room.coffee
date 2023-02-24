@@ -11,6 +11,11 @@ jQuery(document).on 'turbolinks:load', ->
       event.target.value = ""
       event.preventDefault()
 
+  $(document).on 'keypress', '#message_body', (event) ->
+    message = event.target.value
+    if event.keyCode is 13 && message == ''
+      event.preventDefault()
+
 createRoomChannel = (roomId) ->
   App.room = App.cable.subscriptions.create {channel: "RoomChannel", roomId: roomId},
     connected: ->

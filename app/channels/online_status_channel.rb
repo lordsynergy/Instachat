@@ -21,6 +21,7 @@ class OnlineStatusChannel < ApplicationCable::Channel
 
   def appear
     @users = nicknames_list
+
     broadcast
   end
 

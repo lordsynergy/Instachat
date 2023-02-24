@@ -24,4 +24,5 @@
 
 /config/database.yml
 /config/secrets.yml
-
+/config/cable.yml
+yarn.lock

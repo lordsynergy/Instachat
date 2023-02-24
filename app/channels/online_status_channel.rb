@@ -4,12 +4,18 @@ class OnlineStatusChannel < ApplicationCable::Channel
 
     stream_from 'online_status'
 
-    $redis.rpush(@list_name, nickname)
+    RedisInstance.redis_pool.with do |redis|
+      redis.rpush(@list_name, nickname)
+    end
+
     appear
   end
 
   def unsubscribed
-    $redis.lrem(@list_name, 1, nickname)
+    RedisInstance.redis_pool.with do |redis|
+      redis.lrem(@list_name, 1, nickname)
+    end
+
     appear
   end
 
@@ -21,7 +27,9 @@ class OnlineStatusChannel < ApplicationCable::Channel
   private
 
   def nicknames_list
-    $redis.lrange(@list_name, 0, -1)
+    RedisInstance.redis_pool.with do |redis|
+      redis.lrange(@list_name, 0, -1)
+    end
   end
 
   def broadcast

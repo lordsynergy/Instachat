@@ -34,6 +34,8 @@ gem 'redis', '~> 3.0'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'connection_pool'
+
 group :production do
   gem 'pg'
 end

@@ -25,7 +25,13 @@
     <div class="col-md-8">
       <div class="card text-center mt-4 mb-4">
         <div class="card-body">
-          Welcome to Instachat, <b><%= current_user.nickname %></b>!
+          <% if current_user %>
+            Welcome to Instachat, <b><%= current_user.nickname %></b>!
+            <%= link_to 'Delete this user', user_path(current_user.id), method: :delete,
+                        data: { confirm: 'Are you sure you want to delete the user?' }, class: 'btn btn-danger' %>
+          <% else %>
+            <%= link_to 'Welcome to the chat! Create a new user and join!', new_user_path, class: 'btn btn-primary btn-lg' %>
+          <% end %>
         </div>
       </div>
 

@@ -1,24 +1,37 @@
-# README
+## Instachat
+Простое приложение для создания чат-комнат. Общение в режиме реального времени достигается за счет использования 
+```ActionCable``` и ```Redis```
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Рабочее приложение ```Instachat``` находится по адресу: https://chat.goodprogramming.ru/
 
-Things you may want to cover:
+Версии Ruby и Rails:
+```
+ruby >= 2.5.1
+rails ~> 5.2.3
+```
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### Запуск и использование
+Установите ```Bundler```:
+```
+gem install bundler
+```
+Сделайте клон репозитория:
+```
+git clone https://github.com/lordsynergy/Instachat
+```
+Находясь в папке проекта установите зависимости:
+```
+bundle install
+```
+Выполните миграции базы данных:
+```
+bundle exec rails db:migrate
+```
+Запустите сервер приложения:
+```
+bundle exec rails s
+```
+В браузере откройте:
+```
+http://localhost:3000
+```
